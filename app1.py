@@ -77,26 +77,20 @@ selected_movie = st.selectbox(
 if st.button('Show Recommendation'):
     recommended_movie_names, recommended_movie_posters = recommend(selected_movie)
     col1, col2, col3, col4, col5 = st.columns(5)  # Updated method
-    with col1:
-         st.image(recommended_movie_posters[0])
-         st.text(recommended_movie_names[0])
-       
-    with col2:
-        st.image(recommended_movie_posters[1])
-        st.text(recommended_movie_names[1])
-        
-    with col3:
-        st.image(recommended_movie_posters[2])
-        st.text(recommended_movie_names[2])
-        
-    with col4:
-        st.image(recommended_movie_posters[3])
-        st.text(recommended_movie_names[3])
-        
-    with col5:
-        st.image(recommended_movie_posters[4])
-        st.text(recommended_movie_names[4])
 
+    # Iterate over recommendations to populate columns dynamically
+    columns = [col1, col2, col3, col4, col5]
+    for idx, col in enumerate(columns):
+        with col:
+            st.image(recommended_movie_posters[idx])
+            st.text(recommended_movie_names[idx])
+            
+            # Fetch movie_id dynamically
+            movie_id = movies[movies['title'] == recommended_movie_names[idx]].iloc[0]['id']
+            
+            # Create a dynamic link
+            link = f"Check it out [link](https://www.themoviedb.org/movie/{movie_id})"
+            st.markdown(link, unsafe_allow_html=True)
 
 st.markdown("""
     <hr>
